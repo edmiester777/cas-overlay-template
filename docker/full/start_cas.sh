@@ -7,7 +7,6 @@ CLOUD_VAULT_CONFIG=${CLOUD_VAULT_CONFIG:-false}
 CLOUD_CONSUL_CONFIG=${CLOUD_CONSUL_CONFIG:-false}
 CLOUD_ZOOKEEPER_CONFIG=${CLOUD_ZOOKEEPER_CONFIG:-false}
 
-VERSION=${1:-6.1.0-RC6-SNAPSHOT}
 DEFAULT_SUPPORT_LIBS=actions,geolocation,jpa-util,ldap-core,pac4j-api,pac4j-authentication,pac4j-core,person-directory,themes,token-core-api,validation,validation-core
 SUPPORT_LIBS=$DEFAULT_SUPPORT_LIBS,$SUPPORT_LIBS
 

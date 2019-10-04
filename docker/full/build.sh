@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# enable experimental features https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/experimental.md
+export DOCKER_BUILDKIT=1
+
 image_tag=(`cat ../../gradle.properties | grep "cas.version" | cut -d= -f2`)
 
 echo "Building CAS docker image tagged as [$image_tag]"

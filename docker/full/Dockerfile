@@ -1,36 +1,16 @@
-# create layer to cache the .gradle folder
-# this probably doesn't achieve goal b/c any change to gradle files will invalidate layers
-FROM adoptopenjdk/openjdk11:alpine-slim AS cachedeps
+# syntax=docker/dockerfile:experimental
+FROM adoptopenjdk/openjdk11:alpine-slim AS overlay
 COPY ./src cas-overlay/src/
 COPY ./gradle/ cas-overlay/gradle/
 COPY ./gradlew ./settings.gradle ./build.gradle ./gradle.properties /cas-overlay/
-RUN mkdir -p ~/.gradle \
-    && echo "org.gradle.daemon=false" >> ~/.gradle/gradle.properties \
+RUN --mount=type=cache,target=/root/.gradle echo "org.gradle.daemon=false" > ~/.gradle/gradle.properties \
     && echo "org.gradle.configureondemand=true" >> ~/.gradle/gradle.properties \
     && cd cas-overlay \
     && chmod 750 ./gradlew \
     && ./gradlew --version;
 
-# build war with all support jars
-RUN cd cas-overlay \
-    && ./gradlew clean build -PbuildAll=true  --parallel;
-
-# run build with .gradle (cache) folder from previous build
-FROM adoptopenjdk/openjdk11:alpine-slim AS overlay
-
-RUN mkdir -p cas-overlay
-COPY ./src cas-overlay/src/
-COPY ./gradle/ cas-overlay/gradle/
-COPY ./gradlew ./settings.gradle ./build.gradle ./gradle.properties /cas-overlay/
-
-RUN cd cas-overlay \
-    && chmod 750 ./gradlew \
-    && ./gradlew --version;
-
-COPY --from=cachedeps /root/.gradle /root
-
 # build war with all support jars in lib folder rather than in war
-RUN cd cas-overlay \
+RUN --mount=type=cache,target=/root/.gradle cd cas-overlay \
     && ./gradlew clean build -PbuildAll=true  --parallel;
 
 RUN cd cas-overlay/build/libs/ && \
@@ -60,11 +40,12 @@ COPY etc/cas/saml/ /etc/cas/saml/
 COPY --from=overlay cas-overlay/build/libs/cas.war cas-overlay/
 COPY --from=overlay cas-overlay/build/support cas-overlay/support
 EXPOSE 8080 8443
-
+ARG VERSION
+ENV VERSION=${VERSION}
 ENV PATH $PATH:$JAVA_HOME/bin:.
 ENV SUPPORT_LIBS=""
 ADD docker/full/start_cas.sh cas-overlay
 
 WORKDIR cas-overlay
 ENTRYPOINT ["/cas-overlay/start_cas.sh"]
-CMD [ "${VERSION}" ]
+
