@@ -56,13 +56,15 @@ dependencies {
 }
 
 tasks.findByName("jibDockerBuild")
-        .dependsOn(copyWebAppIntoJib, copyConfigIntoJib)
-        .finalizedBy(deleteWebAppFromJib)
+    .dependsOn(copyWebAppIntoJib, copyConfigIntoJib)
+    .finalizedBy(deleteWebAppFromJib)
 
 tasks.findByName("jib")
-        .dependsOn(copyWebAppIntoJib, copyConfigIntoJib)
-        .finalizedBy(deleteWebAppFromJib)
+    .dependsOn(copyWebAppIntoJib, copyConfigIntoJib)
+    .finalizedBy(deleteWebAppFromJib)
 
+// temporary exclusions for jars finding there way into cas.war
+// transitive dependencies should be tracked down and appropriate exclusions added
 configurations {
     runtime.exclude group: 'ch.qos.logback'
     runtime.exclude module: 'ehcache-core'
