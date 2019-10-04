@@ -1,5 +1,5 @@
 
-//for f in `ls -d cas*` ; do echo "dependencies.create(\"org.apereo.cas:$f:\${casServerVersion}\"),"; done
+//for f in `ls -d cas* | grep -v -logback | grep -v -shell` ; do echo "dependencies.create(\"org.apereo.cas:$f:\${casServerVersion}\"),"; done
 ext.libraries = [
         shell : [
             //dependencies.create("org.apereo.cas:cas-server-support-shell:${casServerVersion}"),
@@ -289,5 +289,5 @@ ext.libraries = [
             dependencies.create("org.apereo.cas:cas-server-support-yubikey-couchdb:${casServerVersion}"),
             dependencies.create("org.apereo.cas:cas-server-support-yubikey-jpa:${casServerVersion}"),
             dependencies.create("org.apereo.cas:cas-server-support-yubikey-mongo:${casServerVersion}")
-        ]
+       ]
 ]

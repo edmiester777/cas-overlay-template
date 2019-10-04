@@ -7,7 +7,7 @@ CLOUD_VAULT_CONFIG=${CLOUD_VAULT_CONFIG:-false}
 CLOUD_CONSUL_CONFIG=${CLOUD_CONSUL_CONFIG:-false}
 CLOUD_ZOOKEEPER_CONFIG=${CLOUD_ZOOKEEPER_CONFIG:-false}
 
-VERSION=6.1.0-RC5-SNAPSHOT
+VERSION=${1:-6.1.0-RC6-SNAPSHOT}
 DEFAULT_SUPPORT_LIBS=actions,geolocation,jpa-util,ldap-core,pac4j-api,pac4j-authentication,pac4j-core,person-directory,themes,token-core-api,validation,validation-core
 SUPPORT_LIBS=$DEFAULT_SUPPORT_LIBS,$SUPPORT_LIBS
 
@@ -25,4 +25,6 @@ if [[ ! -z ${SUPPORT_LIBS} ]]; then
     done
 fi
 
-exec /opt/java/openjdk/bin/java -server -noverify $JVM_ARGS -jar cas.war --loader.path=/cas-overlay/libs --spring.cloud.zookeeper.enabled=${CLOUD_ZOOKEEPER_CONFIG} --spring.cloud.amqp.enabled=false --spring.cloud.vault.enabled=${CLOUD_VAULT_CONFIG} --spring.cloud.consul.enabled=${CLOUD_CONSUL_CONFIG} --eureka.client.enabled=false --spring.zipkin.enabled=false --spring.sleuth.enabled=false --ribbon.eureka.enabled=false --feign.hystrix.enabled=false
+# turn off some things, mostly cloud config options, make configurable later
+CAS_ARGS="--spring.cloud.zookeeper.enabled=${CLOUD_ZOOKEEPER_CONFIG} --spring.cloud.amqp.enabled=false --spring.cloud.vault.enabled=${CLOUD_VAULT_CONFIG} --spring.cloud.consul.enabled=${CLOUD_CONSUL_CONFIG} --eureka.client.enabled=false --spring.zipkin.enabled=false --spring.sleuth.enabled=false --ribbon.eureka.enabled=false --feign.hystrix.enabled=false"
+exec /opt/java/openjdk/bin/java -server -noverify $JVM_ARGS -jar cas.war --loader.path=/cas-overlay/libs $CAS_ARGS

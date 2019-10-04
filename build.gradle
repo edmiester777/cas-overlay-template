@@ -65,8 +65,11 @@ tasks.findByName("jib")
 
 configurations {
     runtime.exclude group: 'ch.qos.logback'
+    runtime.exclude module: 'ehcache-core'
     compile.exclude group: 'ch.qos.logback'
+    compile.exclude module: 'ehcache-core'
 }
+
 
 configurations.all {
     resolutionStrategy {
