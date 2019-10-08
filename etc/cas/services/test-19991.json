@@ -1,0 +1,8 @@
+{
+    "@class" : "org.apereo.cas.services.RegexRegisteredService",
+    "serviceId" : "^http://localhost:8080/login/cas",
+    "name" : "Non-Prod Development CAS Service",
+    "description": "DO NOT FUCKING USE THIS IN PROD FOR FUCK SAKE",
+    "id" : 19991,
+    "evaluationOrder" : 1
+}
