@@ -1,8 +1,11 @@
 {
-    "@class" : "org.apereo.cas.services.RegexRegisteredService",
-    "serviceId" : "^http://localhost:8080/login/cas",
-    "name" : "Non-Prod Development CAS Service",
+    "@class" : "org.apereo.cas.support.oauth.services.OAuthRegisteredService",
+    "clientId": "oauthClient",
+    "clientSecret": "oauthSecret",
+    "serviceId": "^http://localhost:8080/.*",
+    "name": "oauth_gt_sso",
     "description": "DO NOT FUCKING USE THIS IN PROD FOR FUCK SAKE",
-    "id" : 19991,
-    "evaluationOrder" : 1
-}
+    "id": 19991,
+    "supportedGrantTypes": ["java.util.HashSet", ["authorization_code"]],
+    "supportedResponseTypes": ["java.util.HashSet", ["code" ]]
+  }
